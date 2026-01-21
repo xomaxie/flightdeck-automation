@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/automation.json",
+  "server": { "port": 4098, "webhookPath": "/webhooks/github" },
+  "opencode": { "bin": "opencode" },
+  "tasks": {
+    "daily-code-review": {
+      "type": "prompt",
+      "prompt": "Review the code changes in this PR and summarize the key modifications.",
+      "workingDir": ".",
+      "outputs": [{ "type": "github", "repo": "owner/repo", "issueOrPrNumber": 1 }]
+    },
+    "weekly-report": {
+      "type": "prompt",
+      "prompt": "Generate a weekly summary of all merged PRs and closed issues.",
+      "outputs": [{ "type": "slack", "webhookUrlEnv": "SLACK_WEBHOOK_URL" }]
+    }
+  },
+  "schedules": [{ "taskId": "weekly-report", "cron": "0 9 * * 1" }],
+  "triggers": [
+    { "taskId": "daily-code-review", "event": "pull_request.opened" },
+    { "taskId": "daily-code-review", "event": "pull_request.synchronize" }
+  ]
+}

@@ -1,0 +1,4 @@
+services/automation/node_modules/
+services/automation/bun.lock
+.env
+.DS_Store
