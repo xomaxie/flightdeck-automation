@@ -1,7 +1,7 @@
 ﻿{
   "id": "flightdeck-automation",
   "name": "FlightDeck Automation",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "both",
   "entrypoint": "services/automation/src/index.ts",
   "configTemplate": "config/automation.jsonc",
@@ -20,6 +20,34 @@
             "label": "View Repo",
             "action": { "type": "open-url", "url": "https://github.com/xomaxie/flightdeck-automation" }
           }
+        ]
+      },
+      {
+        "id": "configure",
+        "title": "Configure GitHub Trigger",
+        "description": "Create a GitHub trigger and task for the automation server.",
+        "blocks": [
+          { "type": "heading", "text": "Repository" },
+          { "type": "input", "id": "repo", "label": "Repo (owner/name)", "placeholder": "owner/repo", "required": true },
+          { "type": "divider" },
+          { "type": "heading", "text": "Trigger" },
+          {
+            "type": "select",
+            "id": "event",
+            "label": "Event",
+            "required": true,
+            "options": [
+              { "id": "pull_request.opened", "label": "PR opened" },
+              { "id": "pull_request.synchronize", "label": "PR updated" },
+              { "id": "issue_comment.created", "label": "Issue/PR comment" }
+            ]
+          },
+          { "type": "divider" },
+          { "type": "heading", "text": "Task" },
+          { "type": "input", "id": "taskId", "label": "Task ID", "placeholder": "automation-task", "value": "automation-task" },
+          { "type": "textarea", "id": "prompt", "label": "Prompt", "placeholder": "Describe the task", "required": true },
+          { "type": "divider" },
+          { "type": "button", "label": "Save trigger", "action": { "type": "submit", "event": "automation.save" } }
         ]
       },
       {
