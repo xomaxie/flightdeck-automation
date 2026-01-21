@@ -1,0 +1,40 @@
+﻿{
+  "id": "flightdeck-automation",
+  "name": "FlightDeck Automation",
+  "version": "0.1.0",
+  "type": "ui",
+  "ui": {
+    "modals": [
+      {
+        "id": "overview",
+        "title": "Automation Overview",
+        "description": "Automation service for scheduled and webhook-driven tasks.",
+        "blocks": [
+          { "type": "heading", "text": "What it does" },
+          { "type": "text", "text": "Runs OpenCode tasks on schedules or GitHub webhooks." },
+          { "type": "divider" },
+          {
+            "type": "button",
+            "label": "View Repo",
+            "action": { "type": "open-url", "url": "https://github.com/xomaxie/flightdeck-automation" }
+          }
+        ]
+      },
+      {
+        "id": "docs",
+        "title": "Automation Docs",
+        "description": "Quickstart and API reference.",
+        "blocks": [
+          { "type": "heading", "text": "Quickstart" },
+          { "type": "text", "text": "cd services/automation; bun install; AUTOMATION_API_KEY=dev-key bun dev" },
+          { "type": "divider" },
+          {
+            "type": "button",
+            "label": "Read README",
+            "action": { "type": "open-url", "url": "https://github.com/xomaxie/flightdeck-automation#readme" }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,16 @@
-# FlightDeck Automation Service
+﻿# FlightDeck Automation Service
 
-Standalone automation server for running opencode tasks on schedules or GitHub webhooks.
+Standalone automation server for running OpenCode tasks on schedules or GitHub webhooks.
+
+## Install as a FlightDeck extension
+
+In FlightDeck -> Extensions -> Repo, paste:
+
+```
+https://github.com/xomaxie/flightdeck-automation
+```
+
+Then open the **FlightDeck Automation** tab under Extensions.
 
 ## Quickstart
 
