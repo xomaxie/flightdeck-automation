@@ -1,8 +1,10 @@
 ﻿{
   "id": "flightdeck-automation",
   "name": "FlightDeck Automation",
-  "version": "0.1.0",
-  "type": "ui",
+  "version": "0.1.1",
+  "type": "both",
+  "entrypoint": "services/automation/src/index.ts",
+  "configTemplate": "config/automation.jsonc",
   "ui": {
     "modals": [
       {
