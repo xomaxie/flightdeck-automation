@@ -1,64 +1,8 @@
-{
+﻿{
   "id": "flightdeck-automation",
   "name": "FlightDeck Automation",
   "version": "0.2.0",
-  "type": "both",
+  "type": "server",
   "entrypoint": "services/automation/src/index.ts",
-  "configTemplate": "config/automation.jsonc",
-  "ui": {
-    "modals": [
-      {
-        "id": "tasks",
-        "title": "Automation Tasks",
-        "description": "View configured automation tasks and their triggers.",
-        "blocks": [
-          { "type": "heading", "text": "Configured Tasks" },
-          { "type": "text", "text": "These tasks will run when their triggers fire." },
-          { "type": "divider" },
-          {
-            "type": "list",
-            "id": "tasks",
-            "label": "Tasks",
-            "items": []
-          },
-          { "type": "divider" },
-          { "type": "button", "label": "Refresh", "action": { "type": "submit", "event": "automation.refresh-tasks" } }
-        ]
-      },
-      {
-        "id": "configure",
-        "title": "Configure Automation",
-        "description": "Set up GitHub triggers to run OpenCode tasks on events.",
-        "blocks": [
-          { "type": "heading", "text": "What it does" },
-          { "type": "text", "text": "Runs OpenCode tasks when GitHub events occur (PR opened, updated, comments)." },
-          { "type": "divider" },
-          { "type": "heading", "text": "Repository" },
-          { "type": "input", "id": "repo", "label": "Repo (owner/name)", "placeholder": "owner/repo", "required": true },
-          { "type": "divider" },
-          { "type": "heading", "text": "Trigger" },
-          {
-            "type": "select",
-            "id": "event",
-            "label": "Event",
-            "required": true,
-            "options": [
-              { "id": "pull_request.opened", "label": "PR opened" },
-              { "id": "pull_request.synchronize", "label": "PR updated" },
-              { "id": "issue_comment.created", "label": "Issue/PR comment" }
-            ]
-          },
-          { "type": "divider" },
-          { "type": "heading", "text": "Task" },
-          { "type": "input", "id": "taskId", "label": "Task ID", "placeholder": "automation-task", "value": "automation-task" },
-          { "type": "select", "id": "model", "label": "Model", "source": "models.visible", "required": true },
-          { "type": "textarea", "id": "prompt", "label": "Prompt", "placeholder": "Describe what OpenCode should do", "required": true },
-          { "type": "divider" },
-          { "type": "button", "label": "Save & Restart", "action": { "type": "submit", "event": "automation.save" } },
-          { "type": "divider" },
-          { "type": "text", "text": "cd services/automation; bun install; bun dev" }
-        ]
-      }
-    ]
-  }
+  "configTemplate": "config/automation.jsonc"
 }

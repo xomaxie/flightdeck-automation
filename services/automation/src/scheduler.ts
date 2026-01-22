@@ -1,5 +1,5 @@
 import type { AutomationConfig } from "./types"
-import Cron from "croner"
+import { Cron } from "croner"
 
 export function shouldRegisterSchedule(taskId: string, tasks: AutomationConfig["tasks"]) {
   return Boolean(tasks[taskId])
