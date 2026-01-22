@@ -1,4 +1,4 @@
-﻿# FlightDeck Automation Service
+# FlightDeck Automation Service
 
 Standalone automation server for running OpenCode tasks on schedules or GitHub webhooks.
 
@@ -24,7 +24,23 @@ AUTOMATION_API_KEY=dev-key bun dev
 
 Default config path: `config/automation.jsonc`
 
-Environment variables:
+### Task configuration
+
+Each task can specify a model:
+
+```json
+{
+  "tasks": {
+    "my-task": {
+      "type": "prompt",
+      "model": "gpt-4.1",
+      "prompt": "Review this PR"
+    }
+  }
+}
+```
+
+### Environment variables
 - `AUTOMATION_API_KEY`: API key for REST/WS access (required)
 - `AUTOMATION_CONFIG`: Override config file path
 - `AUTOMATION_PORT`: HTTP port (default: 4098)

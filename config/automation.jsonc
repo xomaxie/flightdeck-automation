@@ -5,6 +5,7 @@
   "tasks": {
     "daily-code-review": {
       "type": "prompt",
+      "model": "gpt-4.1",
       "prompt": "Review the code changes in this PR and summarize the key modifications.",
       "workingDir": ".",
       "outputs": [{ "type": "github", "repo": "owner/repo", "issueOrPrNumber": 1 }]
