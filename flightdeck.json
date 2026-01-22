@@ -8,6 +8,24 @@
   "ui": {
     "modals": [
       {
+        "id": "tasks",
+        "title": "Automation Tasks",
+        "description": "View configured automation tasks and their triggers.",
+        "blocks": [
+          { "type": "heading", "text": "Configured Tasks" },
+          { "type": "text", "text": "These tasks will run when their triggers fire." },
+          { "type": "divider" },
+          {
+            "type": "list",
+            "id": "tasks",
+            "label": "Tasks",
+            "items": []
+          },
+          { "type": "divider" },
+          { "type": "button", "label": "Refresh", "action": { "type": "submit", "event": "automation.refresh-tasks" } }
+        ]
+      },
+      {
         "id": "configure",
         "title": "Configure Automation",
         "description": "Set up GitHub triggers to run OpenCode tasks on events.",
