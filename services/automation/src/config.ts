@@ -4,6 +4,7 @@ import { z, record, union, literal, object, array, string, number, optional, enu
 const promptTaskSchema = object({
   type: literal("prompt"),
   prompt: string(),
+  model: optional(string()),
   workingDir: optional(string()),
   outputs: optional(array(object({
     type: zodEnum(["github", "slack"]),
@@ -16,6 +17,7 @@ const promptTaskSchema = object({
 const planTaskSchema = object({
   type: literal("plan"),
   planPath: string(),
+  model: optional(string()),
   workingDir: optional(string()),
   outputs: optional(array(object({
     type: zodEnum(["github", "slack"]),
@@ -28,6 +30,7 @@ const planTaskSchema = object({
 const commandTaskSchema = object({
   type: literal("command"),
   commands: array(string()).min(1),
+  model: optional(string()),
   workingDir: optional(string()),
   outputs: optional(array(object({
     type: zodEnum(["github", "slack"]),

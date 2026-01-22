@@ -1,7 +1,7 @@
 export type AutomationTask =
-  | { type: "prompt"; prompt: string; workingDir?: string; outputs?: OutputTarget[] }
-  | { type: "plan"; planPath: string; workingDir?: string; outputs?: OutputTarget[] }
-  | { type: "command"; commands: string[]; workingDir?: string; outputs?: OutputTarget[] }
+  | { type: "prompt"; prompt: string; model?: string; workingDir?: string; outputs?: OutputTarget[] }
+  | { type: "plan"; planPath: string; model?: string; workingDir?: string; outputs?: OutputTarget[] }
+  | { type: "command"; commands: string[]; model?: string; workingDir?: string; outputs?: OutputTarget[] }
 
 export type OutputTarget =
   | { type: "github"; repo: string; issueOrPrNumber?: number }
