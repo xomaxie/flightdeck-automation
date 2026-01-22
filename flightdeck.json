@@ -33,7 +33,7 @@
           { "type": "divider" },
           { "type": "heading", "text": "Task" },
           { "type": "input", "id": "taskId", "label": "Task ID", "placeholder": "automation-task", "value": "automation-task" },
-          { "type": "input", "id": "model", "label": "Model", "placeholder": "gpt-4.1" },
+          { "type": "select", "id": "model", "label": "Model", "source": "models.visible", "required": true },
           { "type": "textarea", "id": "prompt", "label": "Prompt", "placeholder": "Describe what OpenCode should do", "required": true },
           { "type": "divider" },
           { "type": "button", "label": "Save & Restart", "action": { "type": "submit", "event": "automation.save" } },
