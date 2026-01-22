@@ -18,3 +18,8 @@ test("builds command command", () => {
   expect(cmd.args.join(" ")).toContain("run")
   expect(cmd.args.join(" ")).toContain("command")
 })
+
+test("builds prompt command with model", () => {
+  const cmd = buildOpencodeCommand({ type: "prompt", prompt: "hello", model: "gpt-4.1" })
+  expect(cmd.args.join(" ")).toContain("--model gpt-4.1")
+})

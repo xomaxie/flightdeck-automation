@@ -1,9 +1,18 @@
 import type { AutomationTask } from "./types"
 
 export function buildOpencodeCommand(task: AutomationTask) {
-  if (task.type === "prompt") return { args: ["run", "prompt", task.prompt] }
-  if (task.type === "plan") return { args: ["run", "plan", task.planPath] }
-  return { args: ["run", "command", ...task.commands] }
+  const args = ["run"] as string[]
+  if (task.type === "prompt") {
+    args.push("prompt", task.prompt)
+  } else if (task.type === "plan") {
+    args.push("plan", task.planPath)
+  } else {
+    args.push("command", ...task.commands)
+  }
+  if (task.model) {
+    args.unshift("--model", task.model)
+  }
+  return { args }
 }
 
 export async function runTask(task: AutomationTask, bin: string, defaultDir?: string) {
