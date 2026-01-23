@@ -1,8 +1,142 @@
 ﻿{
   "id": "flightdeck-automation",
   "name": "FlightDeck Automation",
-  "version": "0.2.1",
-  "type": "server",
+  "version": "0.2.2",
+  "type": "both",
   "entrypoint": "services/automation/index.ts",
-  "configTemplate": "config/automation.jsonc"
+  "configTemplate": "config/automation.jsonc",
+  "ui": {
+    "modals": [
+      {
+        "id": "tasks",
+        "title": "Automation Tasks",
+        "description": "Create and review automation tasks.",
+        "blocks": [
+          { "type": "heading", "text": "Configured tasks" },
+          { "type": "list", "id": "tasks", "label": "Tasks", "items": [] },
+          { "type": "divider" },
+          {
+            "type": "input",
+            "id": "repo",
+            "label": "Repo (owner/repo)",
+            "placeholder": "org/repo",
+            "required": true
+          },
+          {
+            "type": "input",
+            "id": "taskId",
+            "label": "Task ID",
+            "placeholder": "automation-task",
+            "required": true
+          },
+          {
+            "type": "select",
+            "id": "event",
+            "label": "Trigger Event",
+            "options": [
+              { "id": "pull_request.opened", "label": "PR opened" },
+              { "id": "pull_request.synchronize", "label": "PR updated" },
+              { "id": "issue_comment.created", "label": "Issue/PR comment" }
+            ]
+          },
+          { "type": "select", "id": "model", "label": "Model", "source": "models.visible" },
+          {
+            "type": "input",
+            "id": "connectionId",
+            "label": "GitHub Connection ID",
+            "placeholder": "CONN-12345"
+          },
+          {
+            "type": "textarea",
+            "id": "prompt",
+            "label": "Prompt",
+            "placeholder": "Describe the task",
+            "required": true
+          },
+          { "type": "button", "label": "Save task", "action": { "type": "submit", "event": "automation.save" } },
+          { "type": "divider" },
+          {
+            "type": "input",
+            "id": "deleteTaskId",
+            "label": "Delete task ID",
+            "placeholder": "task-id"
+          },
+          {
+            "type": "button",
+            "label": "Delete task",
+            "action": { "type": "submit", "event": "automation.delete-task" }
+          }
+        ]
+      },
+      {
+        "id": "connections",
+        "title": "GitHub Connections",
+        "description": "Manage GitHub connection tokens.",
+        "blocks": [
+          { "type": "heading", "text": "Connections" },
+          { "type": "list", "id": "connections", "label": "Connections", "items": [] },
+          { "type": "divider" },
+          { "type": "input", "id": "connectionId", "label": "Connection ID", "required": true },
+          { "type": "input", "id": "connectionLabel", "label": "Label" },
+          { "type": "input", "id": "githubToken", "label": "GitHub Token", "required": true },
+          {
+            "type": "toggle",
+            "id": "defaultConnection",
+            "label": "Set as default connection"
+          },
+          {
+            "type": "button",
+            "label": "Save connection",
+            "action": { "type": "submit", "event": "automation.save-connection" }
+          },
+          { "type": "divider" },
+          { "type": "input", "id": "deleteConnectionId", "label": "Delete connection ID" },
+          {
+            "type": "button",
+            "label": "Delete connection",
+            "action": { "type": "submit", "event": "automation.delete-connection" }
+          }
+        ]
+      },
+      {
+        "id": "templates",
+        "title": "Automation Templates",
+        "description": "Manage reusable task templates.",
+        "blocks": [
+          { "type": "heading", "text": "Templates" },
+          { "type": "list", "id": "templates", "label": "Templates", "items": [] },
+          { "type": "divider" },
+          { "type": "input", "id": "templateId", "label": "Template ID", "required": true },
+          { "type": "input", "id": "templateName", "label": "Template name", "required": true },
+          { "type": "textarea", "id": "templateDescription", "label": "Description" },
+          {
+            "type": "select",
+            "id": "templateType",
+            "label": "Task type",
+            "options": [
+              { "id": "prompt", "label": "Prompt" },
+              { "id": "plan", "label": "Plan" },
+              { "id": "command", "label": "Command" }
+            ]
+          },
+          { "type": "select", "id": "templateModel", "label": "Model", "source": "models.visible" },
+          { "type": "textarea", "id": "templatePrompt", "label": "Prompt" },
+          { "type": "input", "id": "templatePlanPath", "label": "Plan path" },
+          { "type": "textarea", "id": "templateCommands", "label": "Commands" },
+          {
+            "type": "button",
+            "label": "Save template",
+            "action": { "type": "submit", "event": "automation.save-template" }
+          },
+          { "type": "divider" },
+          { "type": "input", "id": "deleteTemplateId", "label": "Delete template ID" },
+          {
+            "type": "button",
+            "label": "Delete template",
+            "action": { "type": "submit", "event": "automation.delete-template" }
+          }
+        ]
+      }
+    ]
+  }
 }
