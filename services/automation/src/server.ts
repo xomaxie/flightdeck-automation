@@ -1,7 +1,8 @@
 import type { AutomationConfig, AutomationTask, OutputTarget } from "./types"
-import { mapGithubEvent, verifySignature } from "./webhooks/github"
+import { mapGithubEvent, verifySignature, extractIssueOrPrNumber, extractRepoFullName } from "./webhooks/github"
 
 type TaskResult = { stdout: string; stderr: string; exitCode: number }
+type RunContext = { issueOrPrNumber?: number; repo?: string }
 
 export type RunRecord = {
   id: number
@@ -20,7 +21,12 @@ export type AutomationServerDeps = {
   port?: number
   webhookSecret: string
   runTask: (task: AutomationTask, taskId: string) => Promise<TaskResult>
-  publishReport: (input: { taskId: string; outputs?: OutputTarget[]; result: TaskResult }) => Promise<void>
+  publishReport: (input: {
+    taskId: string
+    outputs?: OutputTarget[]
+    result: TaskResult
+    context?: RunContext
+  }) => Promise<void>
   log?: (message: string) => void
 }
 
@@ -79,7 +85,7 @@ export function createAutomationServer(config: AutomationConfig, deps: Automatio
     }
   }
 
-  async function executeTask(taskId: string, trigger: string) {
+  async function executeTask(taskId: string, trigger: string, context?: RunContext) {
     const task = config.tasks[taskId]
     if (!task) return
     const run: RunRecord = {
@@ -98,7 +104,7 @@ export function createAutomationServer(config: AutomationConfig, deps: Automatio
       run.stdout = result.stdout
       run.stderr = result.stderr
       run.finishedAt = new Date().toISOString()
-      await deps.publishReport({ taskId, outputs: task.outputs, result })
+      await deps.publishReport({ taskId, outputs: task.outputs, result, context })
     } catch (error) {
       run.status = "failure"
       run.exitCode = 1
@@ -126,9 +132,13 @@ export function createAutomationServer(config: AutomationConfig, deps: Automatio
         const payload = JSON.parse(body)
         const mapped = mapGithubEvent(event, payload)
         if (!mapped) return jsonResponse(202, { ok: true })
+        const context = {
+          issueOrPrNumber: extractIssueOrPrNumber(payload),
+          repo: extractRepoFullName(payload),
+        }
         const triggers = config.triggers ?? []
         for (const trigger of triggers) {
-          if (trigger.event === mapped) void executeTask(trigger.taskId, `webhook:${mapped}`)
+          if (trigger.event === mapped) void executeTask(trigger.taskId, `webhook:${mapped}`, context)
         }
         return jsonResponse(200, { ok: true })
       }

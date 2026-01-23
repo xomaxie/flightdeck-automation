@@ -6,10 +6,12 @@ const promptTaskSchema = object({
   prompt: string(),
   model: optional(string()),
   workingDir: optional(string()),
+  githubConnectionId: optional(string()),
   outputs: optional(array(object({
     type: zodEnum(["github", "slack"]),
     repo: optional(string()),
     issueOrPrNumber: optional(number()),
+    connectionId: optional(string()),
     webhookUrlEnv: optional(string()),
   }))),
 })
@@ -19,10 +21,12 @@ const planTaskSchema = object({
   planPath: string(),
   model: optional(string()),
   workingDir: optional(string()),
+  githubConnectionId: optional(string()),
   outputs: optional(array(object({
     type: zodEnum(["github", "slack"]),
     repo: optional(string()),
     issueOrPrNumber: optional(number()),
+    connectionId: optional(string()),
     webhookUrlEnv: optional(string()),
   }))),
 })
@@ -32,10 +36,12 @@ const commandTaskSchema = object({
   commands: array(string()).min(1),
   model: optional(string()),
   workingDir: optional(string()),
+  githubConnectionId: optional(string()),
   outputs: optional(array(object({
     type: zodEnum(["github", "slack"]),
     repo: optional(string()),
     issueOrPrNumber: optional(number()),
+    connectionId: optional(string()),
     webhookUrlEnv: optional(string()),
   }))),
 })
@@ -50,6 +56,12 @@ const configSchema = object({
   triggers: optional(array(object({
     taskId: string(),
     event: zodEnum(["pull_request.opened", "pull_request.synchronize", "issue_comment.created"]),
+  }))),
+  github: optional(object({ defaultConnectionId: optional(string()) })),
+  connections: optional(array(object({
+    id: string(),
+    label: optional(string()),
+    secretKey: optional(string()),
   }))),
 })
 

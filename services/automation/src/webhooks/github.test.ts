@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test"
-import { verifySignature, mapGithubEvent } from "./github"
+import { verifySignature, mapGithubEvent, extractIssueOrPrNumber, extractRepoFullName } from "./github"
 
 test("rejects invalid signature", () => {
   const ok = verifySignature("secret", "body", "sha256=deadbeef")
@@ -27,4 +27,17 @@ test("maps issue_comment created event", () => {
 
 test("returns null for unmapped events", () => {
   expect(mapGithubEvent("push", {})).toBe(null)
+})
+
+test("extracts issue or PR number from payload", () => {
+  expect(extractIssueOrPrNumber({ pull_request: { number: 12 } })).toBe(12)
+  expect(extractIssueOrPrNumber({ issue: { number: 7 } })).toBe(7)
+  expect(extractIssueOrPrNumber({ number: 3 })).toBe(3)
+  expect(extractIssueOrPrNumber({})).toBeUndefined()
+})
+
+test("extracts repo full name from payload", () => {
+  expect(extractRepoFullName({ repository: { full_name: "owner/repo" } })).toBe("owner/repo")
+  expect(extractRepoFullName({ repository: { full_name: "  " } })).toBeUndefined()
+  expect(extractRepoFullName({})).toBeUndefined()
 })

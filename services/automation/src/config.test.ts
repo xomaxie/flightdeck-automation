@@ -22,3 +22,24 @@ test("parses model on prompt task", () => {
   const config = parseAutomationConfig(raw)
   expect(config.tasks.daily).toEqual(expect.objectContaining({ model: "gpt-4.1" }))
 })
+
+test("parses github connections and defaults", () => {
+  const raw = `{
+    "server": { "port": 4098, "webhookPath": "/webhooks/github" },
+    "opencode": { "bin": "opencode" },
+    "github": { "defaultConnectionId": "primary" },
+    "connections": [{ "id": "primary", "label": "Main", "secretKey": "github:primary" }],
+    "tasks": {
+      "review": {
+        "type": "prompt",
+        "prompt": "hello",
+        "githubConnectionId": "primary",
+        "outputs": [{ "type": "github", "repo": "owner/repo", "connectionId": "primary" }]
+      }
+    }
+  }`
+  const config = parseAutomationConfig(raw)
+  expect(config.github?.defaultConnectionId).toBe("primary")
+  expect(config.connections?.[0]).toEqual(expect.objectContaining({ id: "primary", secretKey: "github:primary" }))
+  expect(config.tasks.review).toEqual(expect.objectContaining({ githubConnectionId: "primary" }))
+})

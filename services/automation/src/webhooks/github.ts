@@ -13,3 +13,13 @@ export function mapGithubEvent(event: string, payload: any) {
   if (event === "issue_comment" && payload.action === "created") return "issue_comment.created"
   return null
 }
+
+export function extractIssueOrPrNumber(payload: any) {
+  const number = payload?.pull_request?.number ?? payload?.issue?.number ?? payload?.number
+  return typeof number === "number" && Number.isFinite(number) ? number : undefined
+}
+
+export function extractRepoFullName(payload: any) {
+  const repo = payload?.repository?.full_name
+  return typeof repo === "string" && repo.trim() ? repo : undefined
+}
