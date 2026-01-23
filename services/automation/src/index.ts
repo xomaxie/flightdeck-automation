@@ -78,7 +78,8 @@ export async function main() {
     apiKey,
     port,
     webhookSecret,
-    runTask: (task, taskId) => runTask(task, config.opencode.bin, config.opencode.defaultWorkingDir),
+    runTask: (task, taskId, context) =>
+      runTask(task, config.opencode.bin, config.opencode.defaultWorkingDir, context),
     publishReport: async ({ taskId, outputs, result, context }) => {
       const report = formatReport({ taskId, ...result })
       for (const output of resolveTaskOutputs(outputs)) {

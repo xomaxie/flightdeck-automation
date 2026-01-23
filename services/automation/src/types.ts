@@ -20,6 +20,11 @@ export type GithubConnection = {
   secretKey?: string
 }
 
+export type TaskContext = {
+  repo?: string
+  issueOrPrNumber?: number
+}
+
 export type AutomationConfig = {
   server: { port: number; webhookPath: string }
   opencode: { bin: string; defaultWorkingDir?: string }

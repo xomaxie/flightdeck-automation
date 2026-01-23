@@ -23,3 +23,13 @@ test("builds prompt command with model", () => {
   const cmd = buildOpencodeCommand({ type: "prompt", prompt: "hello", model: "gpt-4.1" })
   expect(cmd.args.join(" ")).toContain("--model gpt-4.1")
 })
+
+test("injects PR context into prompt", () => {
+  const cmd = buildOpencodeCommand(
+    { type: "prompt", prompt: "review please" },
+    { repo: "owner/repo", issueOrPrNumber: 42 },
+  )
+  const joined = cmd.args.join(" ")
+  expect(joined).toContain("owner/repo#42")
+  expect(joined).toContain("gh pr view 42 --repo owner/repo")
+})

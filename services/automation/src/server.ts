@@ -1,8 +1,8 @@
-import type { AutomationConfig, AutomationTask, OutputTarget } from "./types"
+import type { AutomationConfig, AutomationTask, OutputTarget, TaskContext } from "./types"
 import { mapGithubEvent, verifySignature, extractIssueOrPrNumber, extractRepoFullName } from "./webhooks/github"
 
 type TaskResult = { stdout: string; stderr: string; exitCode: number }
-type RunContext = { issueOrPrNumber?: number; repo?: string }
+type RunContext = TaskContext
 
 export type RunRecord = {
   id: number
@@ -20,7 +20,7 @@ export type AutomationServerDeps = {
   apiKey: string
   port?: number
   webhookSecret: string
-  runTask: (task: AutomationTask, taskId: string) => Promise<TaskResult>
+  runTask: (task: AutomationTask, taskId: string, context?: RunContext) => Promise<TaskResult>
   publishReport: (input: {
     taskId: string
     outputs?: OutputTarget[]
@@ -98,7 +98,7 @@ export function createAutomationServer(config: AutomationConfig, deps: Automatio
     runs.unshift(run)
     broadcast({ type: "run.started", data: run })
     try {
-      const result = await deps.runTask(task, taskId)
+      const result = await deps.runTask(task, taskId, context)
       run.status = result.exitCode === 0 ? "success" : "failure"
       run.exitCode = result.exitCode
       run.stdout = result.stdout

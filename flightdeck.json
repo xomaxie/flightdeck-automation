@@ -42,6 +42,12 @@
           { "type": "select", "id": "model", "label": "Model", "source": "models.visible" },
           {
             "type": "input",
+            "id": "workingDir",
+            "label": "Working directory",
+            "placeholder": "C:\\path\\to\\repo or ./relative/path"
+          },
+          {
+            "type": "input",
             "id": "connectionId",
             "label": "GitHub Connection ID",
             "placeholder": "CONN-12345"
