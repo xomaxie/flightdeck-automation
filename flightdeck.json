@@ -1,8 +1,8 @@
 ﻿{
   "id": "flightdeck-automation",
   "name": "FlightDeck Automation",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "server",
-  "entrypoint": "services/automation/src/index.ts",
+  "entrypoint": "services/automation/index.ts",
   "configTemplate": "config/automation.jsonc"
 }

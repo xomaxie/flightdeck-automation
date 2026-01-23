@@ -13,7 +13,7 @@ import type { OutputTarget } from "./types"
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const CONFIG_PATH = process.env.AUTOMATION_CONFIG ?? join(__dirname, "..", "..", "..", "config", "automation.jsonc")
 
-async function main() {
+export async function main() {
   const port = Number(process.env.AUTOMATION_PORT ?? 4098)
   const apiKey = process.env.AUTOMATION_API_KEY ?? ""
   const webhookSecret = process.env.GITHUB_WEBHOOK_SECRET ?? ""
