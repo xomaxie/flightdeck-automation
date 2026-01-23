@@ -50,14 +50,19 @@ export async function main() {
     if (!extensionManagerUrl || !extensionId || !extensionRuntimeToken) return undefined
     if (tokenCache.has(secretKey)) return tokenCache.get(secretKey)
     const url = `${extensionManagerUrl.replace(/\/+$/, "")}/api/v1/extensions/${extensionId}/secrets/${encodeURIComponent(secretKey)}`
-    const res = await fetch(url, {
-      headers: { authorization: `Bearer ${extensionRuntimeToken}` },
-    })
-    if (!res.ok) return undefined
-    const data = (await res.json()) as { value?: string }
-    if (typeof data.value !== "string" || !data.value.trim()) return undefined
-    tokenCache.set(secretKey, data.value)
-    return data.value
+    try {
+      const res = await fetch(url, {
+        headers: { authorization: `Bearer ${extensionRuntimeToken}` },
+      })
+      if (!res.ok) return undefined
+      const data = (await res.json()) as { value?: string }
+      if (typeof data.value !== "string" || !data.value.trim()) return undefined
+      tokenCache.set(secretKey, data.value)
+      return data.value
+    } catch (error) {
+      console.warn(`Failed to fetch GitHub token from extension manager: ${String(error)}`)
+      return undefined
+    }
   }
 
   async function resolveGithubToken(taskId: string, output?: OutputTarget) {
