@@ -11,6 +11,9 @@ function injectPromptContext(task: AutomationTask, context?: TaskContext): Autom
 export function buildOpencodeCommand(task: AutomationTask, context?: TaskContext) {
   const effectiveTask = injectPromptContext(task, context)
   const args = ["run"] as string[]
+  if (effectiveTask.model) {
+    args.push("--model", effectiveTask.model)
+  }
   if (effectiveTask.type === "prompt") {
     args.push("prompt", effectiveTask.prompt)
   } else if (effectiveTask.type === "plan") {
@@ -18,16 +21,14 @@ export function buildOpencodeCommand(task: AutomationTask, context?: TaskContext
   } else {
     args.push("command", ...effectiveTask.commands)
   }
-  if (effectiveTask.model) {
-    args.unshift("--model", effectiveTask.model)
-  }
   return { args }
 }
 
 export async function runTask(task: AutomationTask, bin: string, defaultDir?: string, context?: TaskContext) {
   const { args } = buildOpencodeCommand(task, context)
   const cwd = task.workingDir ?? defaultDir ?? process.cwd()
-  const proc = Bun.spawn([bin, ...args], { cwd, stdout: "pipe", stderr: "pipe" })
+  const env = task.model ? { ...process.env, OPENCODE_MODEL: task.model } : process.env
+  const proc = Bun.spawn([bin, ...args], { cwd, env, stdout: "pipe", stderr: "pipe" })
   const stdout = await new Response(proc.stdout).text()
   const stderr = await new Response(proc.stderr).text()
   const exitCode = await proc.exited
